@@ -1,8 +1,9 @@
 [meta]
 title = "About Us - Our Story"
 description = "Learn about our company, mission, and the experienced team behind our success"
-keywords = ["about", "company", "team", "mission", "history"]
-updated = "2024-01-15T10:30:00Z"
+keywords = [ "about", "company", "team", "mission", "history" ]
+updated = "2025-05-24T13:39:08.890Z"
+updatedBy = "content-manager"
 
 [seo]
 title = "About Us - Learn About Our Company"
@@ -36,22 +37,22 @@ description = "To be the trusted partner for businesses seeking excellence and i
 [values]
 title = "Our Values"
 
-[[values.items]]
-title = "Excellence"
-description = "We strive for excellence in everything we do"
-icon = "star"
+  [[values.items]]
+  title = "Excellence"
+  description = "We strive for excellence in everything we do"
+  icon = "star"
 
-[[values.items]]
-title = "Integrity"
-description = "We conduct business with honesty and transparency"
-icon = "shield"
+  [[values.items]]
+  title = "Integrity"
+  description = "We conduct business with honesty and transparency"
+  icon = "shield"
 
-[[values.items]]
-title = "Innovation"
-description = "We embrace new ideas and creative solutions"
-icon = "lightbulb"
+  [[values.items]]
+  title = "Innovation"
+  description = "We embrace new ideas and creative solutions"
+  icon = "lightbulb"
 
-[[values.items]]
-title = "Partnership"
-description = "We build lasting relationships with our clients"
-icon = "handshake"
+  [[values.items]]
+  title = "Partnership"
+  description = "We build lasting relationships with our clients"
+  icon = "handshake"

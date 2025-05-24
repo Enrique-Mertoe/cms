@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import {SessionProvider} from "@/src/components/providers/session-provider";
+import NavigationProgress from "@/src/components/navigation-progress";
+import React from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+      <NavigationProgress />
       <SessionProvider>
           {children}
       </SessionProvider>
