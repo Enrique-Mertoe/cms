@@ -1,0 +1,32 @@
+[colors]
+primary = "#3B82F6"
+secondary = "#10B981"
+accent = "#F59E0B"
+background = "#FFFFFF"
+foreground = "#1F2937"
+muted = "#F3F4F6"
+border = "#E5E7EB"
+
+[typography]
+heading_font = "Inter"
+body_font = "Open Sans"
+
+[font_sizes]
+xs = "0.75rem"
+sm = "0.875rem"
+base = "1rem"
+lg = "1.125rem"
+xl = "1.25rem"
+"2xl" = "1.5rem"
+"3xl" = "1.875rem"
+
+[layout]
+max_width = "1200px"
+header_height = "80px"
+footer_height = "200px"
+sidebar_width = "280px"
+
+[animations]
+duration_fast = "150ms"
+duration_normal = "300ms"
+duration_slow = "500ms"

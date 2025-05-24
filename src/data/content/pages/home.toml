@@ -1,0 +1,73 @@
+[meta]
+title = "Welcome to Our Website"
+description = "Professional services for your business needs"
+keywords = ["business", "services", "professional", "home"]
+updated = "2024-01-15T10:30:00Z"
+
+[seo]
+title = "Home - Professional Business Services"
+description = "Transform your business with our professional services. Expert solutions for growth and success."
+canonical = "/"
+no_index = false
+
+[hero]
+title = "Transform Your Business"
+subtitle = "Professional solutions that drive real results for your company"
+cta_text = "Get Started Today"
+cta_link = "/contact"
+secondary_cta_text = "Learn More"
+secondary_cta_link = "/about"
+background_image = "/images/hero-bg.jpg"
+background_video = ""
+
+[about_preview]
+title = "About Our Company"
+content = """
+We provide exceptional services with over 10 years of experience in the industry.
+Our dedicated team is committed to delivering quality solutions that help businesses grow and succeed.
+"""
+image = "/images/about-preview.jpg"
+cta_text = "Learn More About Us"
+cta_link = "/about"
+
+[[features]]
+title = "Quality Service"
+description = "We deliver high-quality solutions tailored to your needs"
+icon = "check-circle"
+color = "primary"
+
+[[features]]
+title = "Expert Team"
+description = "Our experienced professionals bring years of expertise"
+icon = "users"
+color = "secondary"
+
+[[features]]
+title = "24/7 Support"
+description = "Round-the-clock support for all your business needs"
+icon = "headphones"
+color = "accent"
+
+[stats]
+title = "Our Impact"
+subtitle = "Numbers that speak for themselves"
+
+[[stats.items]]
+value = "500+"
+label = "Happy Clients"
+icon = "smile"
+
+[[stats.items]]
+value = "1000+"
+label = "Projects Completed"
+icon = "briefcase"
+
+[[stats.items]]
+value = "10+"
+label = "Years Experience"
+icon = "calendar"
+
+[[stats.items]]
+value = "24/7"
+label = "Support Available"
+icon = "clock"

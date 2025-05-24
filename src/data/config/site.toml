@@ -1,0 +1,25 @@
+[site]
+name = "Client Website"
+description = "Professional website for our client"
+url = "https://clientwebsite.com"
+email = "contact@clientwebsite.com"
+phone = "+1234567890"
+logo = "/images/logo.png"
+
+[company]
+name = "Client Company"
+address = "123 Business St, City, State 12345"
+founded = 2020
+registration_number = "12345678"
+
+[social]
+facebook = "https://facebook.com/client"
+twitter = "https://twitter.com/client"
+linkedin = "https://linkedin.com/company/client"
+instagram = "https://instagram.com/client"
+youtube = ""
+
+[contact]
+hours = "Mon-Fri 9AM-5PM"
+timezone = "America/New_York"
+emergency_phone = ""

@@ -1,0 +1,44 @@
+[settings]
+title = "Meet Our Team"
+subtitle = "The professionals behind our success"
+layout = "grid"
+show_social = true
+
+[[members]]
+id = 1
+name = "Alex Johnson"
+position = "CEO & Founder"
+bio = "With over 15 years of experience in business consulting, Alex leads our team with vision and expertise."
+image = "/images/team/alex-johnson.jpg"
+email = "alex@company.com"
+social.linkedin = "https://linkedin.com/in/alex-johnson"
+social.twitter = "https://twitter.com/alex_johnson"
+
+[[members]]
+id = 2
+name = "Maria Garcia"
+position = "Head of Operations"
+bio = "Maria ensures smooth operations and exceptional client service delivery across all our projects."
+image = "/images/team/maria-garcia.jpg"
+email = "maria@company.com"
+social.linkedin = "https://linkedin.com/in/maria-garcia"
+
+[[members]]
+id = 3
+name = "David Wilson"
+position = "Technical Director"
+bio = "David brings technical expertise and innovative solutions to complex business challenges."
+image = "/images/team/david-wilson.jpg"
+email = "david@company.com"
+social.linkedin = "https://linkedin.com/in/david-wilson"
+social.github = "https://github.com/david-wilson"
+
+[[members]]
+id = 4
+name = "Lisa Chen"
+position = "Marketing Manager"
+bio = "Lisa drives our marketing efforts and helps clients build strong brand presence in their markets."
+image = "/images/team/lisa-chen.jpg"
+email = "lisa@company.com"
+social.linkedin = "https://linkedin.com/in/lisa-chen"
+social.twitter = "https://twitter.com/lisa_chen"

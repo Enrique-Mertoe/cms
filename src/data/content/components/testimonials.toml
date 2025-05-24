@@ -1,0 +1,42 @@
+[settings]
+title = "What Our Clients Say"
+subtitle = "Real feedback from real customers who trust our services"
+display_count = 3
+auto_rotate = true
+rotation_speed = 5000
+
+[[testimonials]]
+id = 1
+name = "John Smith"
+company = "ABC Corporation"
+position = "CEO"
+content = "Excellent service and professional team. They delivered exactly what we needed on time and within budget."
+image = "/images/testimonials/john-smith.jpg"
+rating = 5
+
+[[testimonials]]
+id = 2
+name = "Sarah Johnson"
+company = "XYZ Industries"
+position = "Marketing Director"
+content = "Outstanding results and great communication throughout the project. Highly recommend their services."
+image = "/images/testimonials/sarah-johnson.jpg"
+rating = 5
+
+[[testimonials]]
+id = 3
+name = "Michael Brown"
+company = "Tech Solutions Inc"
+position = "CTO"
+content = "Professional, reliable, and innovative. They helped us achieve our goals and exceed our expectations."
+image = "/images/testimonials/michael-brown.jpg"
+rating = 5
+
+[[testimonials]]
+id = 4
+name = "Emily Davis"
+company = "Creative Agency"
+position = "Founder"
+content = "The team went above and beyond to ensure our success. Great partnership and fantastic results."
+image = "/images/testimonials/emily-davis.jpg"
+rating = 5

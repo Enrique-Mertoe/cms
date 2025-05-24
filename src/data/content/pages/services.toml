@@ -1,0 +1,65 @@
+[meta]
+title = "Our Services"
+description = "Comprehensive professional services to help your business grow"
+keywords = ["services", "business", "consulting", "solutions"]
+updated = "2024-01-15T10:30:00Z"
+
+[seo]
+title = "Professional Services - Complete Business Solutions"
+description = "Discover our comprehensive range of professional services designed to help your business succeed and grow."
+canonical = "/services"
+
+[hero]
+title = "Our Services"
+subtitle = "Comprehensive solutions for your business needs"
+background_image = "/images/services-hero.jpg"
+
+[intro]
+title = "What We Offer"
+content = """
+Our comprehensive range of services is designed to address every aspect of your business needs.
+From strategy and planning to implementation and support, we provide end-to-end solutions
+that drive results and create lasting value.
+"""
+
+[[services]]
+title = "Business Consulting"
+description = "Strategic guidance to help your business reach its full potential"
+icon = "trending-up"
+features = [
+  "Strategic Planning",
+  "Market Analysis",
+  "Process Optimization",
+  "Performance Metrics"
+]
+price_from = "Contact us"
+
+[[services]]
+title = "Digital Solutions"
+description = "Modern digital solutions to enhance your business operations"
+icon = "monitor"
+features = [
+  "Website Development",
+  "Digital Marketing",
+  "E-commerce Solutions",
+  "Mobile Applications"
+]
+price_from = "Contact us"
+
+[[services]]
+title = "Support & Maintenance"
+description = "Ongoing support to ensure your systems run smoothly"
+icon = "headphones"
+features = [
+  "24/7 Technical Support",
+  "Regular Maintenance",
+  "Security Updates",
+  "Performance Monitoring"
+]
+price_from = "Contact us"
+
+[cta]
+title = "Ready to Get Started?"
+description = "Contact us today to discuss how we can help your business succeed"
+button_text = "Contact Us"
+button_link = "/contact"

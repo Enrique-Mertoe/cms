@@ -1,0 +1,38 @@
+[global]
+site_name = "Client Website"
+default_title = "Client Website - Professional Services"
+title_template = "%s | Client Website"
+default_description = "Professional services for business growth and success"
+canonical_url = "https://clientwebsite.com"
+default_keywords = ["business", "services", "professional", "consulting"]
+
+[robots]
+index = true
+follow = true
+googlebot = "index,follow"
+
+[og]
+type = "website"
+image = "/images/og-image.jpg"
+image_width = 1200
+image_height = 630
+image_alt = "Client Website"
+
+[twitter]
+card = "summary_large_image"
+site = "@clientwebsite"
+creator = "@clientwebsite"
+
+[schema]
+organization = "Client Company"
+logo = "/images/logo.png"
+same_as = [
+  "https://facebook.com/client",
+  "https://twitter.com/client",
+  "https://linkedin.com/company/client"
+]
+
+[analytics]
+google_analytics = ""
+google_tag_manager = ""
+facebook_pixel = ""

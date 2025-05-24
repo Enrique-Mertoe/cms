@@ -1,0 +1,38 @@
+[meta]
+title = "Contact Us"
+description = "Get in touch with our team for professional business solutions"
+keywords = ["contact", "get in touch", "business", "consultation"]
+updated = "2024-01-15T10:30:00Z"
+
+[seo]
+title = "Contact Us - Get Professional Business Solutions"
+description = "Ready to transform your business? Contact our team today for expert consultation and professional services."
+canonical = "/contact"
+
+[hero]
+title = "Contact Us"
+subtitle = "Ready to transform your business? Let's talk."
+background_image = "/images/contact-hero.jpg"
+
+[contact_info]
+title = "Get In Touch"
+description = "We're here to help your business succeed. Reach out to us today."
+
+[office]
+title = "Our Office"
+address = "123 Business Street"
+city = "Your City"
+state = "State"
+zip = "12345"
+country = "USA"
+
+[hours]
+title = "Business Hours"
+weekdays = "Monday - Friday: 9:00 AM - 6:00 PM"
+weekend = "Saturday - Sunday: Closed"
+timezone = "EST"
+
+[form]
+title = "Send us a Message"
+description = "Fill out the form below and we'll get back to you within 24 hours"
+success_message = "Thank you for your message. We'll be in touch soon!"

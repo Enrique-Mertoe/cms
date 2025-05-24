@@ -1,0 +1,47 @@
+[settings]
+title = "Why Choose Us"
+subtitle = "The advantages that set us apart from the competition"
+layout = "cards"
+columns = 3
+
+[[features]]
+id = 1
+title = "Expert Team"
+description = "Our experienced professionals bring years of industry expertise to every project"
+icon = "users"
+color = "primary"
+
+[[features]]
+id = 2
+title = "Quality Service"
+description = "We deliver high-quality solutions tailored to meet your specific business needs"
+icon = "check-circle"
+color = "secondary"
+
+[[features]]
+id = 3
+title = "24/7 Support"
+description = "Round-the-clock support ensures your business operations run smoothly"
+icon = "headphones"
+color = "accent"
+
+[[features]]
+id = 4
+title = "Fast Delivery"
+description = "Quick turnaround times without compromising on quality or attention to detail"
+icon = "zap"
+color = "primary"
+
+[[features]]
+id = 5
+title = "Competitive Pricing"
+description = "Affordable solutions that provide excellent value for your investment"
+icon = "dollar-sign"
+color = "secondary"
+
+[[features]]
+id = 6
+title = "Custom Solutions"
+description = "Tailored approaches designed specifically for your unique business requirements"
+icon = "settings"
+color = "accent"

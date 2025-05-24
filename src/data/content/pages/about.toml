@@ -1,0 +1,57 @@
+[meta]
+title = "About Us - Our Story"
+description = "Learn about our company, mission, and the experienced team behind our success"
+keywords = ["about", "company", "team", "mission", "history"]
+updated = "2024-01-15T10:30:00Z"
+
+[seo]
+title = "About Us - Learn About Our Company"
+description = "Discover our story, mission, and the experienced team behind our success. Professional services since 2010."
+canonical = "/about"
+
+[hero]
+title = "About Our Company"
+subtitle = "Building success through professional excellence since 2010"
+background_image = "/images/about-hero.jpg"
+
+[story]
+title = "Our Story"
+content = """
+Founded in 2010, our company has grown from a small startup to a leading provider of professional services.
+We believe in delivering exceptional value to our clients through innovative solutions and dedicated service.
+
+Our journey began with a simple mission: to help businesses achieve their goals through professional expertise
+and personalized attention. Today, we continue to uphold these values while expanding our capabilities to
+serve a diverse range of clients across various industries.
+"""
+
+[mission]
+title = "Our Mission"
+description = "To empower businesses with professional solutions that drive growth and success"
+
+[vision]
+title = "Our Vision"
+description = "To be the trusted partner for businesses seeking excellence and innovation"
+
+[values]
+title = "Our Values"
+
+[[values.items]]
+title = "Excellence"
+description = "We strive for excellence in everything we do"
+icon = "star"
+
+[[values.items]]
+title = "Integrity"
+description = "We conduct business with honesty and transparency"
+icon = "shield"
+
+[[values.items]]
+title = "Innovation"
+description = "We embrace new ideas and creative solutions"
+icon = "lightbulb"
+
+[[values.items]]
+title = "Partnership"
+description = "We build lasting relationships with our clients"
+icon = "handshake"

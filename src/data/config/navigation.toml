@@ -1,0 +1,45 @@
+[[main_menu]]
+label = "Home"
+href = "/"
+order = 1
+icon = "home"
+
+[[main_menu]]
+label = "About"
+href = "/about"
+order = 2
+icon = "info"
+
+[[main_menu]]
+label = "Services"
+href = "/services"
+order = 3
+icon = "briefcase"
+
+[[main_menu]]
+label = "Contact"
+href = "/contact"
+order = 4
+icon = "phone"
+
+[footer_menu]
+company = [
+  { label = "About Us", href = "/about" },
+  { label = "Our Team", href = "/team" },
+  { label = "Careers", href = "/careers" }
+]
+services = [
+  { label = "Web Design", href = "/services/web-design" },
+  { label = "Development", href = "/services/development" },
+  { label = "Consulting", href = "/services/consulting" }
+]
+support = [
+  { label = "Contact", href = "/contact" },
+  { label = "FAQ", href = "/faq" },
+  { label = "Support", href = "/support" }
+]
+
+[cta]
+text = "Get Started"
+href = "/contact"
+style = "primary"

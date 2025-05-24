@@ -1,0 +1,61 @@
+[settings]
+title = "Our Work"
+subtitle = "A showcase of our recent projects and achievements"
+layout = "masonry"
+columns = 3
+show_captions = true
+lightbox = true
+
+[[images]]
+id = 1
+src = "/images/gallery/project-1.jpg"
+alt = "Modern office building project"
+caption = "Commercial Development Project"
+category = "commercial"
+
+[[images]]
+id = 2
+src = "/images/gallery/project-2.jpg"
+alt = "Residential complex design"
+caption = "Residential Complex Design"
+category = "residential"
+
+[[images]]
+id = 3
+src = "/images/gallery/project-3.jpg"
+alt = "Interior design showcase"
+caption = "Interior Design Project"
+category = "interior"
+
+[[images]]
+id = 4
+src = "/images/gallery/project-4.jpg"
+alt = "Landscape architecture"
+caption = "Landscape Architecture"
+category = "landscape"
+
+[[images]]
+id = 5
+src = "/images/gallery/project-5.jpg"
+alt = "Industrial facility"
+caption = "Industrial Facility Design"
+category = "industrial"
+
+[[images]]
+id = 6
+src = "/images/gallery/project-6.jpg"
+alt = "Renovation project"
+caption = "Historic Building Renovation"
+category = "renovation"
+
+[filters]
+show_all_button = true
+all_text = "All Projects"
+categories = [
+  { id = "commercial", label = "Commercial" },
+  { id = "residential", label = "Residential" },
+  { id = "interior", label = "Interior" },
+  { id = "landscape", label = "Landscape" },
+  { id = "industrial", label = "Industrial" },
+  { id = "renovation", label = "Renovation" }
+]
