@@ -1,3 +1,5 @@
+'use server';
+
 import fs from 'fs/promises';
 import path from 'path';
 import {parse as parseToml, stringify as stringifyToml} from '@iarna/toml';
@@ -9,10 +11,13 @@ const CONFIG_DIR = path.join(DATA_DIR, 'config');
 const CONTENT_DIR = path.join(DATA_DIR, 'content');
 const MEDIA_DIR = path.join(process.cwd(), 'public/media');
 const TRASH_DIR = path.join(MEDIA_DIR, '.trash');
+// Hidden system settings directory - deep in the file structure for security
+const SYSTEM_DIR = path.join(process.cwd(), '.system', '.config', '.settings');
 
 // Cache for configuration files
 const configCache = new Map<string, any>();
 const contentCache = new Map<string, any>();
+const systemCache = new Map<string, any>();
 
 export async function readConfigFile(filename: string) {
     const cacheKey = `config:${filename}`;
@@ -88,9 +93,68 @@ export async function writeContentFile(type: string, filename: string, data: any
     }
 }
 
-export function clearCache() {
+export async function clearCache() {
     configCache.clear();
     contentCache.clear();
+    systemCache.clear();
+}
+
+// Ensure system directory exists
+async function ensureSystemDirectoryExists() {
+    try {
+        await fs.mkdir(SYSTEM_DIR, { recursive: true });
+        return true;
+    } catch (error) {
+        console.error('Error creating system directory:', error);
+        return false;
+    }
+}
+
+export async function readSystemFile(filename: string) {
+    const cacheKey = `system:${filename}`;
+
+    if (systemCache.has(cacheKey)) {
+        return systemCache.get(cacheKey);
+    }
+
+    try {
+        await ensureSystemDirectoryExists();
+        const filePath = path.join(SYSTEM_DIR, filename);
+
+        try {
+            await fs.access(filePath);
+        } catch {
+            // File doesn't exist yet, return empty object
+            return {};
+        }
+
+        const content = await fs.readFile(filePath, 'utf-8');
+        const parsed = parseToml(content);
+
+        systemCache.set(cacheKey, parsed);
+        return parsed;
+    } catch (error) {
+        console.error(`Error reading system file ${filename}:`, error);
+        return {};
+    }
+}
+
+export async function writeSystemFile(filename: string, data: any) {
+    try {
+        await ensureSystemDirectoryExists();
+        const filePath = path.join(SYSTEM_DIR, filename);
+        const tomlContent = stringifyToml(data);
+        await fs.writeFile(filePath, tomlContent, 'utf-8');
+
+        // Update cache
+        const cacheKey = `system:${filename}`;
+        systemCache.set(cacheKey, data);
+
+        return true;
+    } catch (error) {
+        console.error(`Error writing system file ${filename}:`, error);
+        return false;
+    }
 }
 
 export async function listFiles(directory: string) {
@@ -242,6 +306,15 @@ export async function updatePageContent(page: string, data: any) {
 
 export async function updateComponentContent(component: string, data: any) {
     return await writeContentFile('components', `${component}.toml`, data);
+}
+
+// System settings functions
+export async function getSystemSettings() {
+    return await readSystemFile('system-settings.toml');
+}
+
+export async function updateSystemSettings(data: any) {
+    return await writeSystemFile('system-settings.toml', data);
 }
 
 // Backup and restore functionality
