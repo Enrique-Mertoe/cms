@@ -20,8 +20,22 @@ import {
     Settings as SettingsIcon,
     Clock,
     ToggleLeft,
-    ToggleRight
+    ToggleRight,
+    RotateCcw,
+    Image
 } from 'lucide-react';
+import { FilePicker } from '@/src/components/media/file-picker';
+import { MediaFile } from '@/src/lib/services/media-service';
+
+// FilePicker component props interface
+interface FilePickerProps {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    onSelect: (file: MediaFile | MediaFile[] | null) => void;
+    title?: string;
+    allowedTypes?: string[];
+    multiple?: boolean;
+}
 
 // Default settings structure (will be replaced with API data)
 const INITIAL_SETTINGS_DATA = {
@@ -39,8 +53,14 @@ export default function SettingsDashboardPage() {
     const [selectedCategory, setSelectedCategory] = useState('general');
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [isResetting, setIsResetting] = useState(false);
     const [saveStatus, setSaveStatus] = useState(null);
     const [lastModified, setLastModified] = useState(new Date().toISOString());
+
+    // File picker state
+    const [filePickerOpen, setFilePickerOpen] = useState(false);
+    const [currentField, setCurrentField] = useState<string>('');
+    const [allowedFileTypes, setAllowedFileTypes] = useState<string[]>([]);
 
     // Load settings data from API
     useEffect(() => {
@@ -102,6 +122,51 @@ export default function SettingsDashboardPage() {
             setTimeout(() => setSaveStatus(null), 3000);
         } finally {
             setIsSaving(false);
+        }
+    };
+
+    // Handle reset
+    const handleReset = async () => {
+        // Confirm before resetting
+        if (!window.confirm('Are you sure you want to reset all settings to default values? This cannot be undone.')) {
+            return;
+        }
+
+        setIsResetting(true);
+        setSaveStatus(null);
+
+        try {
+            const response = await fetch('/api/settings?action=reset', {
+                method: 'POST',
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to reset settings');
+            }
+
+            const data = await response.json();
+
+            // Success - reload settings
+            // @ts-ignore
+            setSaveStatus('success');
+
+            // Reload settings from API
+            const settingsResponse = await fetch('/api/settings');
+            if (settingsResponse.ok) {
+                const settingsData = await settingsResponse.json();
+                setSettingsData(settingsData.settings);
+                setLastModified(settingsData.lastModified);
+            }
+
+            setTimeout(() => setSaveStatus(null), 3000);
+        } catch (error) {
+            console.error('Reset error:', error);
+            // @ts-ignore
+            setSaveStatus('error');
+            setTimeout(() => setSaveStatus(null), 3000);
+        } finally {
+            setIsResetting(false);
         }
     };
 
@@ -348,19 +413,38 @@ export default function SettingsDashboardPage() {
         }
 
         if (key.includes('logo') || key.includes('favicon')) {
+            // Determine allowed file types based on the field
+            const isImage = true; // Both logo and favicon are images
+
+            // Open file picker for this field
+            const openFilePicker = () => {
+                setCurrentField(fullPath);
+                setAllowedFileTypes(isImage ? ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp'] : []);
+                setFilePickerOpen(true);
+            };
+
             return (
                 <div key={key} className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                         {label}
                     </label>
                     <div className="space-y-2">
-                        <input
-                            type="text"
-                            value={value}
-                            onChange={(e) => updateSettingsValue(fullPath, e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                            placeholder={`Enter ${label.toLowerCase()} URL`}
-                        />
+                        <div className="flex">
+                            <input
+                                type="text"
+                                value={value}
+                                onChange={(e) => updateSettingsValue(fullPath, e.target.value)}
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                placeholder={`Enter ${label.toLowerCase()} URL`}
+                            />
+                            <button 
+                                onClick={openFilePicker}
+                                className="px-3 py-2 bg-gray-100 text-gray-700 rounded-r-md hover:bg-gray-200 border border-l-0 border-gray-300 flex items-center"
+                            >
+                                <Image className="w-4 h-4 mr-2" />
+                                Browse
+                            </button>
+                        </div>
                         {value && (
                             <div className="relative w-16 h-16 bg-gray-100 rounded-md overflow-hidden">
                                 <img
@@ -373,9 +457,6 @@ export default function SettingsDashboardPage() {
                                 />
                             </div>
                         )}
-                        <button className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200">
-                            Choose File
-                        </button>
                     </div>
                 </div>
             );
@@ -442,14 +523,27 @@ export default function SettingsDashboardPage() {
                                 <AlertCircle className="w-4 h-4"/>
                             )}
                             <span>
-                                {saveStatus === 'success' ? 'Saved successfully' : 'Save failed'}
+                                {saveStatus === 'success' ? 'Saved successfully' : 'Operation failed'}
                             </span>
                         </div>
                     )}
 
                     <button
+                        onClick={handleReset}
+                        disabled={isResetting || isSaving}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                    >
+                        {isResetting ? (
+                            <RefreshCw className="w-4 h-4 mr-2 animate-spin"/>
+                        ) : (
+                            <RotateCcw className="w-4 h-4 mr-2"/>
+                        )}
+                        {isResetting ? 'Resetting...' : 'Reset to Default'}
+                    </button>
+
+                    <button
                         onClick={handleSave}
-                        disabled={isSaving}
+                        disabled={isSaving || isResetting}
                         className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
                     >
                         {isSaving ? (
@@ -593,6 +687,25 @@ export default function SettingsDashboardPage() {
                     </div>
                 </div>
             </div>
+
+            {/* File Picker Dialog */}
+            <FilePicker
+                open={filePickerOpen}
+                onOpenChange={setFilePickerOpen}
+                onSelect={(file) => {
+                    if (file) {
+                        // If single file selection
+                        if (!Array.isArray(file)) {
+                            // Update the settings with the file URL
+                            updateSettingsValue(currentField, `/media${file.path}`);
+                        }
+                    }
+                    setFilePickerOpen(false);
+                }}
+                title="Select Media File"
+                allowedTypes={allowedFileTypes}
+                multiple={false}
+            />
         </div>
     );
 }

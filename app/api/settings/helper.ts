@@ -5,7 +5,7 @@ import { getSystemSettings, updateSystemSettings } from "@/src/lib/config/file-m
 
 // Default system settings structure
 // @ts-ignore
-export const DEFAULT_SYSTEM_SETTINGS = {
+const DEFAULT_SYSTEM_SETTINGS = {
     general: {
         site_name: 'Your Website',
         site_tagline: 'Professional services for your business',
@@ -79,6 +79,12 @@ export async function getSystemSettingsWithDefaults() {
 
         for (const section in settings) {
             if (mergedSettings[section]) {
+                // Check if the section is empty
+                if (Object.keys(settings[section]).length === 0) {
+                    // Keep the default values for this section
+                    continue;
+                }
+
                 mergedSettings[section] = {
                     ...mergedSettings[section],
                     ...settings[section]
@@ -112,6 +118,18 @@ export async function saveSystemSettings(data: any) {
         return await updateSystemSettings(settingsToSave);
     } catch (error) {
         console.error('Error saving system settings:', error);
+        return false;
+    }
+}
+
+/**
+ * Reset system settings to defaults
+ */
+export async function resetSystemSettings() {
+    try {
+        return await updateSystemSettings(DEFAULT_SYSTEM_SETTINGS);
+    } catch (error) {
+        console.error('Error resetting system settings:', error);
         return false;
     }
 }

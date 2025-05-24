@@ -3,8 +3,20 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { Bell, Search, User, Settings, LogOut, Menu, Sun, Moon } from 'lucide-react';
+import { Bell, Search, User, Settings, LogOut, Menu, Sun, Moon, Trash2, Check, ExternalLink } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
+
+// Notification type from API
+interface Notification {
+    id: string;
+    title: string;
+    message: string;
+    time: string;
+    read: boolean;
+    type: 'success' | 'info' | 'warning' | 'error';
+    userId?: string;
+}
 
 interface DashboardHeaderProps {
     sidebarCollapsed: boolean;
@@ -16,46 +28,124 @@ export default function DashboardHeader({ sidebarCollapsed }: DashboardHeaderPro
     const [showNotifications, setShowNotifications] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [darkMode, setDarkMode] = useState(false);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     const userMenuRef = useRef<HTMLDivElement>(null);
     const notificationRef = useRef<HTMLDivElement>(null);
 
-    const notifications = [
-        {
-            id: 1,
-            title: 'Content Updated',
-            message: 'Home page content has been successfully updated',
-            time: '5 minutes ago',
-            read: false,
-            type: 'success'
-        },
-        {
-            id: 2,
-            title: 'New Image Uploaded',
-            message: 'Team photo added to media library',
-            time: '1 hour ago',
-            read: false,
-            type: 'info'
-        },
-        {
-            id: 3,
-            title: 'SEO Optimization',
-            message: 'Meta tags updated for better search visibility',
-            time: '2 hours ago',
-            read: true,
-            type: 'success'
-        },
-        {
-            id: 4,
-            title: 'System Backup',
-            message: 'Daily backup completed successfully',
-            time: '6 hours ago',
-            read: true,
-            type: 'info'
-        }
-    ];
+    // Fetch notifications from API
+    const fetchNotifications = async () => {
+        try {
+            setIsLoading(true);
+            const response = await fetch('/api/notifications');
 
-    const unreadCount = notifications.filter(n => !n.read).length;
+            if (!response.ok) {
+                throw new Error('Failed to fetch notifications');
+            }
+
+            const data = await response.json();
+            setNotifications(data.notifications);
+            setUnreadCount(data.unreadCount);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Mark notification as read
+    const markAsRead = async (id: string) => {
+        try {
+            const response = await fetch(`/api/notifications?id=${id}`, {
+                method: 'PATCH',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to mark notification as read');
+            }
+
+            // Update local state
+            setNotifications(prev => 
+                prev.map(notification => 
+                    notification.id === id 
+                        ? { ...notification, read: true } 
+                        : notification
+                )
+            );
+            setUnreadCount(prev => Math.max(0, prev - 1));
+        } catch (error) {
+            console.error('Error marking notification as read:', error);
+        }
+    };
+
+    // Mark all notifications as read
+    const markAllAsRead = async () => {
+        try {
+            const response = await fetch('/api/notifications?action=markAllRead', {
+                method: 'PATCH',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to mark all notifications as read');
+            }
+
+            // Update local state
+            setNotifications(prev => 
+                prev.map(notification => ({ ...notification, read: true }))
+            );
+            setUnreadCount(0);
+        } catch (error) {
+            console.error('Error marking all notifications as read:', error);
+        }
+    };
+
+    // Delete notification
+    const deleteNotification = async (id: string, event: React.MouseEvent) => {
+        // Prevent the notification click event from firing
+        event.stopPropagation();
+
+        try {
+            const response = await fetch(`/api/notifications?id=${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete notification');
+            }
+
+            // Update local state
+            const updatedNotifications = notifications.filter(n => n.id !== id);
+            setNotifications(updatedNotifications);
+            setUnreadCount(updatedNotifications.filter(n => !n.read).length);
+        } catch (error) {
+            console.error('Error deleting notification:', error);
+        }
+    };
+
+    // Format relative time
+    const formatRelativeTime = (isoTime: string) => {
+        const date = new Date(isoTime);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffSecs = Math.floor(diffMs / 1000);
+        const diffMins = Math.floor(diffSecs / 60);
+        const diffHours = Math.floor(diffMins / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffSecs < 60) return 'just now';
+        if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+        if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+
+        return date.toLocaleDateString();
+    };
+
+    // Fetch notifications when component mounts
+    useEffect(() => {
+        fetchNotifications();
+    }, []);
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -144,7 +234,11 @@ export default function DashboardHeader({ sidebarCollapsed }: DashboardHeaderPro
                                         <div className="flex items-center space-x-2">
                                             <span className="text-xs text-gray-500">{unreadCount} unread</span>
                                             {unreadCount > 0 && (
-                                                <button className="text-xs text-blue-600 hover:text-blue-700 font-medium">
+                                                <button 
+                                                    onClick={markAllAsRead}
+                                                    className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center"
+                                                >
+                                                    <Check className="w-3 h-3 mr-1" />
                                                     Mark all read
                                                 </button>
                                             )}
@@ -153,46 +247,71 @@ export default function DashboardHeader({ sidebarCollapsed }: DashboardHeaderPro
                                 </div>
 
                                 <div className="max-h-80 overflow-y-auto">
-                                    {notifications.map((notification) => (
-                                        <div
-                                            key={notification.id}
-                                            className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer ${
-                                                !notification.read ? 'bg-blue-50/50' : ''
-                                            }`}
-                                        >
-                                            <div className="flex items-start space-x-3">
-                                                <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                                                    !notification.read ? 'bg-blue-500' : 'bg-gray-300'
-                                                }`} />
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center justify-between">
-                                                        <p className="text-sm font-medium text-gray-900 truncate">
-                                                            {notification.title}
+                                    {isLoading ? (
+                                        <div className="p-4 text-center text-gray-500">
+                                            Loading notifications...
+                                        </div>
+                                    ) : notifications.length === 0 ? (
+                                        <div className="p-4 text-center text-gray-500">
+                                            No notifications yet
+                                        </div>
+                                    ) : (
+                                        notifications.map((notification) => (
+                                            <div
+                                                key={notification.id}
+                                                onClick={() => !notification.read && markAsRead(notification.id)}
+                                                className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer ${
+                                                    !notification.read ? 'bg-blue-50/50' : ''
+                                                }`}
+                                            >
+                                                <div className="flex items-start space-x-3">
+                                                    <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                                                        !notification.read ? 'bg-blue-500' : 'bg-gray-300'
+                                                    }`} />
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex items-center justify-between">
+                                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                                                {notification.title}
+                                                            </p>
+                                                            <span className={`px-2 py-1 text-xs rounded-full ${
+                                                                notification.type === 'success' ? 'bg-green-100 text-green-700' :
+                                                                notification.type === 'info' ? 'bg-blue-100 text-blue-700' :
+                                                                notification.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
+                                                                'bg-red-100 text-red-700'
+                                                            }`}>
+                                                                {notification.type}
+                                                            </span>
+                                                        </div>
+                                                        <p className="text-sm text-gray-600 mt-1">
+                                                            {notification.message}
                                                         </p>
-                                                        <span className={`px-2 py-1 text-xs rounded-full ${
-                                                            notification.type === 'success'
-                                                                ? 'bg-green-100 text-green-700'
-                                                                : 'bg-blue-100 text-blue-700'
-                                                        }`}>
-                                                            {notification.type}
-                                                        </span>
+                                                        <div className="flex items-center justify-between mt-2">
+                                                            <p className="text-xs text-gray-500">
+                                                                {formatRelativeTime(notification.time)}
+                                                            </p>
+                                                            <button 
+                                                                onClick={(e) => deleteNotification(notification.id, e)}
+                                                                className="text-gray-400 hover:text-red-500 transition-colors"
+                                                                title="Delete notification"
+                                                            >
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <p className="text-sm text-gray-600 mt-1">
-                                                        {notification.message}
-                                                    </p>
-                                                    <p className="text-xs text-gray-500 mt-2">
-                                                        {notification.time}
-                                                    </p>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))
+                                    )}
                                 </div>
 
                                 <div className="p-3 border-t border-gray-200 text-center">
-                                    <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                                    <Link 
+                                        href="/dashboard/notifications" 
+                                        className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center justify-center"
+                                    >
                                         View all notifications
-                                    </button>
+                                        <ExternalLink className="w-3 h-3 ml-1" />
+                                    </Link>
                                 </div>
                             </div>
                         )}

@@ -847,11 +847,13 @@ export default function MediaDashboardPage() {
 
               <div className="max-h-40 overflow-y-auto border border-gray-200 rounded-md p-2">
                 {uploadFiles.map((file, index) => {
-                  const FileIcon = getFileIcon(file.type);
                   return (
                     <div key={index} className="flex items-center py-1 border-b border-gray-100 last:border-0">
                       <div className="w-8 h-8 bg-gray-100 rounded-md flex items-center justify-center mr-2">
-                        <FileIcon className="w-4 h-4 text-gray-500" />
+                        {(() => {
+                          const FileIcon = getFileIcon(file.type);
+                          return <FileIcon className="w-4 h-4 text-gray-500" />;
+                        })()}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-700 truncate">{file.name}</p>
@@ -936,7 +938,10 @@ export default function MediaDashboardPage() {
                   />
                 ) : (
                   <div className="text-center">
-                    {React.createElement(getFileIcon(selectedFileDetails.type || ''), { className: "w-16 h-16 text-gray-400 mx-auto mb-2" })}
+                    {(() => {
+                      const FileIcon = getFileIcon(selectedFileDetails.type || '');
+                      return <FileIcon className="w-16 h-16 text-gray-400 mx-auto mb-2" />;
+                    })()}
                     <p className="text-sm text-gray-500">No preview available</p>
                   </div>
                 )}
